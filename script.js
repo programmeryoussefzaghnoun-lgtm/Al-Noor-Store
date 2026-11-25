@@ -71,18 +71,28 @@ function createProductCard(p) {
     </div>
     <h3>${p.name}</h3>
     <div class="price">${formatPrice(p.price)}</div>
-    <button class="add-cart" data-id="${p.id}">
-      أضف للسلة
-      <i class="fa-solid fa-cart-shopping"></i>
-    </button>
+    
+    <div class="card-actions">
+      <button class="add-cart" data-id="${p.id}">
+        أضف للسلة
+        <i class="fa-solid fa-cart-shopping"></i>
+      </button>
+      
+      <button class="btn-buy-now" data-id="${p.id}">
+        شراء مباشر
+        <i class="fa-brands fa-whatsapp"></i>
+      </button>
+    </div>
   </article>
   `;
 }
 
 if (isAllProductsPage) {
+  // صفحة products.html → عرض الكل في شبكة
   listContainer.classList.remove("products");
   listContainer.innerHTML = products.map(createProductCard).join("");
 } else {
+  // الصفحة الرئيسية → أول 4 منتجات + زر عرض المزيد
   const initialProducts = products.slice(0, 4);
   listContainer.innerHTML = initialProducts.map(createProductCard).join("");
 
@@ -103,8 +113,10 @@ function updateCartCount() {
 }
 updateCartCount();
 
-// ===== إضافة للسلة (من الكروت) =====
+// ===== إضافة للسلة والشراء المباشر (من الكروت) =====
 listContainer.addEventListener("click", e => {
+  
+  // 1. زر الإضافة للسلة
   const add = e.target.closest(".add-cart");
   if (add) {
     const productId = Number(add.dataset.id);
@@ -116,6 +128,24 @@ listContainer.addEventListener("click", e => {
     setTimeout(() => {
       add.innerHTML = `أضف للسلة <i class="fa-solid fa-cart-shopping"></i>`;
     }, 1200);
+    return; // ننهي الدالة هنا حتى لا يُفتح الواتساب بالخطأ
+  }
+
+  // 2. زر الشراء المباشر (واتساب)
+  const buyNow = e.target.closest(".btn-buy-now");
+  if (buyNow) {
+    const productId = Number(buyNow.dataset.id);
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    let message = "السلام عليكم، أريد شراء هذا المنتج مباشرة من متجر النور:\n\n";
+    message += "🕒 " + product.name + "\n";
+    message += "السعر: " + formatPrice(product.price) + "\n\n";
+    message += "أرجو تأكيد الطلب وتزويدي بتفاصيل التوصيل.";
+
+    const whatsappURL = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+    window.open(whatsappURL, "_blank");
+    return;
   }
 });
 
@@ -170,7 +200,7 @@ function ensureProductModal() {
 
 // فتح المعاينة عند الضغط على المنتج
 listContainer.addEventListener("click", e => {
-  if (e.target.closest(".add-cart")) return;
+  if (e.target.closest(".add-cart") || e.target.closest(".btn-buy-now")) return;
 
   const card = e.target.closest(".card");
   if (!card) return;
@@ -295,7 +325,7 @@ if (cartButton) {
   });
 }
 
-// ===== تجهيز طلب واتساب =====
+// ===== تجهيز طلب واتساب للسلة بالكامل =====
 function checkoutWhatsApp() {
   if (Object.keys(cart).length === 0) {
     showToast("السلة فارغة! أضف المنتجات أولاً.");
@@ -377,7 +407,7 @@ if (heroNext && heroPrev) {
 }
 auto();
 
-// دعم السحب باللمس
+// دعم السحب باللمس للسلايدر
 (function swipeHero() {
   if (!heroEl) return;
   let startX = 0, startY = 0, tracking = false;
@@ -451,6 +481,7 @@ if (nav) {
     const id = item.dataset.id;
     if (!id) return;
     
+    // التوجيه لصفحة المنتجات إذا لم نكن فيها
     if (isAllProductsPage) {
       const card = listContainer.querySelector(`.card[data-id="${id}"]`);
       if (card) card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
