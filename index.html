@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متجر النور | ساعات إسلامية فاخرة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- الشريط العلوي -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span class="topbar-loc"><i class="fa-solid fa-location-dot"></i> Mersin, Türkiye</span>
+      <span class="topbar-ship"><i class="fa-solid fa-truck-fast"></i> شحن سريع لجميع المدن</span>
+      <div class="social">
+        <a href="https://www.facebook.com/share/1Dzon1h2Fz/?mibextid=wwXIfr"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.tiktok.com/@alnour694"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.instagram.com/geievh75/?utm_source=ig_web_button_share_sheet"><i class="fa-brands fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- الهيدر -->
+  <header class="header">
+    <div class="container header-inner">
+      <button class="menu-toggle" id="menuToggle" aria-label="القائمة"><i class="fa-solid fa-bars"></i></button>
+
+      <nav class="nav" id="nav">
+        <a href="#" class="active">الرئيسية</a>
+        <a href="products.html">المنتجات <i class="fa-solid fa-chevron-down"></i></a>
+        <a href="products.html">الساعات <i class="fa-solid fa-chevron-down"></i></a>
+        <a href="#about">عن المتجر</a>
+        <a href="#footer">تواصل معنا</a>
+      </nav>
+
+      <a href="#" class="logo">
+        <i class="fa-solid fa-crown"></i>
+        <span class="logo-main">متجر النور</span>
+        <span class="logo-sub">ساعات إسلامية فاخرة</span>
+      </a>
+
+      <div class="header-tools">
+        <form class="search" onsubmit="return false;">
+          <input type="text" placeholder="ابحث عن ساعة...">
+          <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+        <a href="#" class="icon-btn cart-btn" aria-label="سلة التسوق">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- السلايدر الرئيسي -->
+  <section class="hero" id="hero">
+
+    <div class="slide active" style="background-image:url('image.1.png')">
+      <div class="slide-content">
+        <h1>أناقة تدوم ..<br><span>مع ساعاتنا الفاخرة</span></h1>
+        <ul class="hero-list">
+          <li>جودة أصلية مضمونة <i class="fa-solid fa-circle-check"></i></li>
+          <li>تصاميم عصرية <i class="fa-solid fa-circle-check"></i></li>
+          <li>أسعار مميزة <i class="fa-solid fa-circle-check"></i></li>
+        </ul>
+        <a href="#products" class="btn-gold"><i class="fa-solid fa-arrow-left"></i> تسوق الآن</a>
+      </div>
+    </div>
+
+    <div class="slide" style="background-image:url('https://img.parisgalleryme.com/media/catalog/category/Watches-Arabic.webp')">
+      <div class="slide-content">
+        <h1>تشكيلة جديدة ..<br><span>ساعات رجالية كلاسيكية</span></h1>
+        <ul class="hero-list">
+          <li>ضمان حقيقي <i class="fa-solid fa-circle-check"></i></li>
+          <li>شحن لجميع المدن <i class="fa-solid fa-circle-check"></i></li>
+          <li>دفع آمن <i class="fa-solid fa-circle-check"></i></li>
+        </ul>
+        <a href="#products" class="btn-gold"><i class="fa-solid fa-arrow-left"></i> تسوق الآن</a>
+      </div>
+    </div>
+
+    <div class="slide" style="background-image:url('image.2.png')">
+      <div class="slide-content">
+        <h1>هدية لا تُنسى ..<br><span>اختر ساعتك المفضلة</span></h1>
+        <ul class="hero-list">
+          <li>تغليف هدايا فاخر <i class="fa-solid fa-circle-check"></i></li>
+          <li>عروض حصرية <i class="fa-solid fa-circle-check"></i></li>
+          <li>خدمة عملاء ممتازة <i class="fa-solid fa-circle-check"></i></li>
+        </ul>
+        <a href="#products" class="btn-gold"><i class="fa-solid fa-arrow-left"></i> تسوق الآن</a>
+      </div>
+    </div>
+
+    <button class="arrow arrow-next" id="heroNext" aria-label="التالي"><i class="fa-solid fa-chevron-right"></i></button>
+    <button class="arrow arrow-prev" id="heroPrev" aria-label="السابق"><i class="fa-solid fa-chevron-left"></i></button>
+  </section>
+
+  <!-- شريط المميزات -->
+  <section class="container">
+    <div class="features">
+      <div class="feature"><i class="fa-regular fa-star"></i><span>رضاكم هدفنا</span></div>
+      <div class="feature"><i class="fa-regular fa-credit-card"></i><span>دفع آمن</span></div>
+      <div class="feature"><i class="fa-solid fa-truck-fast"></i><span>شحن سريع</span></div>
+      <div class="feature"><i class="fa-solid fa-headset"></i><span>دعم فني</span></div>
+      <div class="feature"><i class="fa-solid fa-shield-halved"></i><span>ضمان حقيقي</span></div>
+      <div class="feature"><i class="fa-solid fa-gift"></i><span>هدايا فاخرة</span></div>
+    </div>
+  </section>
+
+  <!-- أحدث الساعات -->
+  <section class="container section" id="products">
+    <div class="section-title">
+      <span class="line"></span>
+      <h2><i class="fa-regular fa-gem"></i> أحدث الساعات</h2>
+      <span class="line"></span>
+    </div>
+
+    <div class="products-wrap">
+      <div class="products" id="products-list"></div>
+      <button class="arrow small arrow-next" id="prodNext" aria-label="التالي"><i class="fa-solid fa-chevron-right"></i></button>
+      <button class="arrow small arrow-prev" id="prodPrev" aria-label="السابق"><i class="fa-solid fa-chevron-left"></i></button>
+    </div>
+  </section>
+
+  <!-- البانرات -->
+  <section class="container banners" id="about">
+
+    <div class="banner" style="background-image:url('images/banner-gifts.jpg')">
+      <div class="banner-text">
+        <h3>هدايا مليزة</h3>
+        <p>لكل المناسبات</p>
+        <a href="#" class="btn-gold small"><i class="fa-solid fa-arrow-left"></i> اكتشف المزيد</a>
+      </div>
+    </div>
+
+    <div class="banner" style="background-image:url('images/banner-watches.jpg')">
+      <div class="banner-text">
+        <h3>تشكيلة واسعة</h3>
+        <p>من الساعات العالمية</p>
+        <a href="#products" class="btn-gold small"><i class="fa-solid fa-arrow-left"></i> تسوق الآن</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- شريط الثقة -->
+  <section class="container">
+    <div class="trust">
+      <div class="trust-item"><i class="fa-solid fa-shield-halved"></i><span>جودة مضمونة</span></div>
+      <div class="trust-item"><i class="fa-solid fa-truck-fast"></i><span>توصيل سريع</span></div>
+      <div class="trust-item"><i class="fa-solid fa-lock"></i><span>دفع آمن</span></div>
+      <div class="trust-item"><i class="fa-solid fa-headset"></i><span>خدمة عملاء مميزة</span></div>
+    </div>
+  </section>
+
+  <!-- الفوتر -->
+  <footer class="footer" id="footer">
+    <div class="container footer-inner">
+
+      <div class="footer-links">
+        <h4>روابط سريعة</h4>
+        <a href="#">الرئيسية</a>
+        <a href="products.html">المنتجات</a>
+        <a href="#about">عن المتجر</a>
+        <a href="#footer">تواصل معنا</a>
+      </div>
+
+      <div class="footer-brand">
+        <i class="fa-solid fa-crown"></i>
+        <div class="logo-main">متجر النور</div>
+        <p>ساعات إسلامية فاخرة</p>
+        <div class="social big">
+          <a href="https://www.facebook.com/share/1Dzon1h2Fz/?mibextid=wwXIfr"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.tiktok.com/@alnour694"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://www.instagram.com/geievh75/?utm_source=ig_web_button_share_sheet"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <div class="newsletter">
+        <h4>اشترك في نشرتنا البريدية</h4>
+        <p>ليصلك كل جديد وعروضنا الخاصة</p>
+        <form id="newsForm">
+          <input type="email" placeholder="أدخل بريدك الإلكتروني" required>
+          <button type="submit">اشتراك</button>
+        </form>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- زر واتساب -->
+  <a href="https://wa.me/+905514969472" class="whatsapp" target="_blank" aria-label="واتساب">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
