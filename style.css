@@ -1911,3 +1911,44 @@ button{
     scroll-behavior: smooth;
   }
 }
+
+/* =========================================
+   تنسيق زر الشراء المباشر الجديد
+   ========================================= */
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.btn-buy-now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 7px 26px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: .3s;
+}
+
+.btn-buy-now:hover {
+  background: var(--gold);
+  color: #1a1208;
+}
+
+/* في الموبايل تصغير الأزرار قليلاً لتناسب الشاشة */
+@media(max-width: 600px) {
+  .btn-buy-now, 
+  .card .add-cart {
+    padding: 7px 10px;
+    font-size: 12px;
+    width: 100%;
+  }
+}
