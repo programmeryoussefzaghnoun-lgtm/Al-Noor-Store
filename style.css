@@ -1870,49 +1870,6 @@ button{
 }
 
 /* =========================================
-   إصلاح الموبايل: شبكة 2 فوق 2 وتداخل زر الاشتراك
-   ========================================= */
-
-@media (max-width: 600px) {
-  /* تحويل المنتجات إلى شبكة */
-  .products {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-    overflow-x: visible !important;
-  }
-
-  .products .card {
-    flex: unset !important; 
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-
-  /* إصلاح زر الاشتراك مع الواتساب */
-  .newsletter form {
-    margin-bottom: 60px; 
-  }
-}
-
-/* =========================================
-   إصلاح الزوم عند الضغط على الحقول وتحسين السكرول في الموبايل
-   ========================================= */
-
-@media (max-width: 600px) {
-  /* منع الزوم التلقائي في الآيفون والأندرويد عند الضغط على حقل البريد أو البحث */
-  .newsletter input,
-  .search input {
-    font-size: 16px !important; 
-  }
-
-  /* تحسين سلاسة التمرير في الموبايل */
-  body, html {
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-  }
-}
-
-/* =========================================
    تنسيق زر الشراء المباشر الجديد
    ========================================= */
 
@@ -1943,12 +1900,229 @@ button{
   color: #1a1208;
 }
 
-/* في الموبايل تصغير الأزرار قليلاً لتناسب الشاشة */
 @media(max-width: 600px) {
   .btn-buy-now, 
   .card .add-cart {
     padding: 7px 10px;
     font-size: 12px;
     width: 100%;
+  }
+}
+
+/* =========================================
+   تنسيقات قسم آراء العملاء وعداد الزوار
+   ========================================= */
+
+.visitor-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--black);
+  color: var(--gold-light);
+  width: max-content;
+  margin: 0 auto 30px;
+  padding: 8px 20px;
+  border-radius: 30px;
+  border: 1px solid var(--gold);
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 4px 14px rgba(212,162,76,.2);
+}
+
+.visitor-counter i {
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.visitor-counter strong {
+  color: #fff;
+  font-size: 17px;
+  margin: 0 4px;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.review-card {
+  background: linear-gradient(180deg, #f1d9c6, #fbeee2);
+  border: 1px solid rgba(212,162,76,.35);
+  border-radius: 16px;
+  padding: 25px 20px;
+  text-align: center;
+  transition: .3s;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.15);
+}
+
+.review-card .stars {
+  color: var(--gold);
+  font-size: 18px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.review-card p {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  min-height: 48px;
+}
+
+.review-card .reviewer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #8a6a2e;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.review-card .reviewer i {
+  font-size: 20px;
+}
+
+@media(max-width: 820px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  .review-card p {
+    min-height: auto;
+  }
+}
+
+/* =========================================
+   إصلاح الموبايل: شبكة 2 فوق 2 وتداخل زر الاشتراك والزوم
+   ========================================= */
+
+@media (max-width: 600px) {
+  .products {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    overflow-x: visible !important;
+  }
+
+  .products .card {
+    flex: unset !important; 
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .newsletter form {
+    margin-bottom: 60px; 
+  }
+  
+  .newsletter input,
+  .search input {
+    font-size: 16px !important; 
+  }
+
+  body, html {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* =========================================
+   تنسيقات صفحة الآراء ونموذج الإضافة
+   ========================================= */
+
+.review-form-container {
+  max-width: 600px;
+  margin: 0 auto 40px;
+  background: linear-gradient(180deg, #f1d9c6, #fbeee2);
+  border: 1px solid var(--gold);
+  border-radius: 16px;
+  padding: 25px;
+  display: none;
+  animation: zoomIn 0.3s ease;
+}
+
+.review-form-container.open {
+  display: block;
+}
+
+.review-form-container h3 {
+  text-align: center;
+  color: var(--text);
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: right;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(212,162,76,.5);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  background: var(--cream-2);
+  outline: none;
+  transition: .3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212,162,76,.2);
+}
+
+.star-rating-input {
+  display: flex;
+  gap: 8px;
+  font-size: 26px;
+  color: var(--gold);
+  direction: ltr;
+  justify-content: flex-end;
+}
+
+.star-rating-input i {
+  cursor: pointer;
+  transition: .2s;
+}
+
+.star-rating-input i:hover,
+.star-rating-input i.active {
+  font-weight: 900;
+  transform: scale(1.1);
+}
+
+@media(max-width: 600px) {
+  .review-form-container {
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* منع الزوم في صفحة الآراء */
+  #reviewName, 
+  #reviewText {
+    font-size: 16px !important;
   }
 }
