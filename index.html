@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>متجر النور | ساعات إسلامية فاخرة</title>
+  <link rel="icon" type="image/png" href="logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -34,6 +35,7 @@
         <a href="products.html">المنتجات <i class="fa-solid fa-chevron-down"></i></a>
         <a href="products.html">الساعات <i class="fa-solid fa-chevron-down"></i></a>
         <a href="#about">عن المتجر</a>
+        <a href="reviews.html">آراء العملاء</a>
         <a href="#footer">تواصل معنا</a>
       </nav>
 
@@ -157,6 +159,31 @@
     </div>
   </section>
 
+  <!-- قسم آراء العملاء والعداد -->
+  <section class="container section" id="reviews" style="padding-bottom: 50px;">
+    <div class="section-title">
+      <span class="line"></span>
+      <h2><i class="fa-solid fa-star"></i> آراء عملائنا</h2>
+      <span class="line"></span>
+    </div>
+
+    <!-- عداد الزوار -->
+    <div class="visitor-counter">
+      <i class="fa-solid fa-eye"></i>
+      <span>أنت الزائر رقم <strong id="visitorCount">1</strong> لموقعنا اليوم</span>
+    </div>
+
+    <!-- كروت الآراء (يتم تعبئتها بواسطة JS) -->
+    <div class="reviews-grid"></div>
+
+    <!-- زر عرض المزيد من الآراء -->
+    <div class="btn-show-more-wrapper" style="margin-top: 25px;">
+      <a href="reviews.html" class="btn-show-more">
+        عرض المزيد من الآراء <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+  </section>
+
   <!-- الفوتر -->
   <footer class="footer" id="footer">
     <div class="container footer-inner">
@@ -165,6 +192,7 @@
         <h4>روابط سريعة</h4>
         <a href="#">الرئيسية</a>
         <a href="products.html">المنتجات</a>
+        <a href="reviews.html">آراء العملاء</a>
         <a href="#about">عن المتجر</a>
         <a href="#footer">تواصل معنا</a>
       </div>
