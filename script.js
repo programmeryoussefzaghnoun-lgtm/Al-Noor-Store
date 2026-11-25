@@ -88,11 +88,9 @@ function createProductCard(p) {
 }
 
 if (isAllProductsPage) {
-  // صفحة products.html → عرض الكل في شبكة
   listContainer.classList.remove("products");
   listContainer.innerHTML = products.map(createProductCard).join("");
-} else {
-  // الصفحة الرئيسية → أول 4 منتجات + زر عرض المزيد
+} else if (listContainer) {
   const initialProducts = products.slice(0, 4);
   listContainer.innerHTML = initialProducts.map(createProductCard).join("");
 
@@ -103,51 +101,57 @@ if (isAllProductsPage) {
       عرض المزيد <i class="fa-solid fa-arrow-left"></i>
     </a>
   `;
-  document.querySelector("#products .products-wrap").after(btnWrapper);
+  const targetAfter = document.querySelector("#products .products-wrap");
+  if (targetAfter) {
+    targetAfter.after(btnWrapper);
+  }
 }
 
 // ===== تحديث عداد السلة =====
 function updateCartCount() {
+  if(!cartCount) return;
   const totalQuantity = Object.values(cart).reduce((sum, q) => sum + q, 0);
   cartCount.textContent = totalQuantity;
 }
 updateCartCount();
 
-// ===== إضافة للسلة والشراء المباشر (من الكروت) =====
-listContainer.addEventListener("click", e => {
-  
-  // 1. زر الإضافة للسلة
-  const add = e.target.closest(".add-cart");
-  if (add) {
-    const productId = Number(add.dataset.id);
-    cart[productId] = (cart[productId] || 0) + 1;
-    saveCart();
-    updateCartCount();
+// ===== إضافة للسلة والشراء المباشر =====
+if (listContainer) {
+  listContainer.addEventListener("click", e => {
+    
+    // 1. زر الإضافة للسلة
+    const add = e.target.closest(".add-cart");
+    if (add) {
+      const productId = Number(add.dataset.id);
+      cart[productId] = (cart[productId] || 0) + 1;
+      saveCart();
+      updateCartCount();
 
-    add.innerHTML = `تمت الإضافة <i class="fa-solid fa-check"></i>`;
-    setTimeout(() => {
-      add.innerHTML = `أضف للسلة <i class="fa-solid fa-cart-shopping"></i>`;
-    }, 1200);
-    return; // ننهي الدالة هنا حتى لا يُفتح الواتساب بالخطأ
-  }
+      add.innerHTML = `تمت الإضافة <i class="fa-solid fa-check"></i>`;
+      setTimeout(() => {
+        add.innerHTML = `أضف للسلة <i class="fa-solid fa-cart-shopping"></i>`;
+      }, 1200);
+      return;
+    }
 
-  // 2. زر الشراء المباشر (واتساب)
-  const buyNow = e.target.closest(".btn-buy-now");
-  if (buyNow) {
-    const productId = Number(buyNow.dataset.id);
-    const product = products.find(p => p.id === productId);
-    if (!product) return;
+    // 2. زر الشراء المباشر (واتساب)
+    const buyNow = e.target.closest(".btn-buy-now");
+    if (buyNow) {
+      const productId = Number(buyNow.dataset.id);
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
 
-    let message = "السلام عليكم، أريد شراء هذا المنتج مباشرة من متجر النور:\n\n";
-    message += "🕒 " + product.name + "\n";
-    message += "السعر: " + formatPrice(product.price) + "\n\n";
-    message += "أرجو تأكيد الطلب وتزويدي بتفاصيل التوصيل.";
+      let message = "السلام عليكم، أريد شراء هذا المنتج مباشرة من متجر النور:\n\n";
+      message += "🕒 " + product.name + "\n";
+      message += "السعر: " + formatPrice(product.price) + "\n\n";
+      message += "أرجو تأكيد الطلب وتزويدي بتفاصيل التوصيل.";
 
-    const whatsappURL = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
-    window.open(whatsappURL, "_blank");
-    return;
-  }
-});
+      const whatsappURL = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+      window.open(whatsappURL, "_blank");
+      return;
+    }
+  });
+}
 
 // ======================================
 // نافذة معاينة المنتج (Product Preview)
@@ -199,27 +203,29 @@ function ensureProductModal() {
 }
 
 // فتح المعاينة عند الضغط على المنتج
-listContainer.addEventListener("click", e => {
-  if (e.target.closest(".add-cart") || e.target.closest(".btn-buy-now")) return;
+if (listContainer) {
+  listContainer.addEventListener("click", e => {
+    if (e.target.closest(".add-cart") || e.target.closest(".btn-buy-now")) return;
 
-  const card = e.target.closest(".card");
-  if (!card) return;
+    const card = e.target.closest(".card");
+    if (!card) return;
 
-  const productId = Number(card.dataset.id);
-  const product = products.find(p => p.id === productId);
-  if (!product) return;
+    const productId = Number(card.dataset.id);
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
 
-  ensureProductModal();
-  const modal = document.getElementById("productViewModal");
-  
-  modal.querySelector("#pvImage").src = product.img;
-  modal.querySelector("#pvName").textContent = product.name;
-  modal.querySelector("#pvPrice").textContent = formatPrice(product.price);
-  modal.querySelector("#pvAddCart").dataset.id = product.id;
-  modal.querySelector("#pvAddCart").innerHTML = `أضف للسلة <i class="fa-solid fa-cart-shopping"></i>`;
+    ensureProductModal();
+    const modal = document.getElementById("productViewModal");
+    
+    modal.querySelector("#pvImage").src = product.img;
+    modal.querySelector("#pvName").textContent = product.name;
+    modal.querySelector("#pvPrice").textContent = formatPrice(product.price);
+    modal.querySelector("#pvAddCart").dataset.id = product.id;
+    modal.querySelector("#pvAddCart").innerHTML = `أضف للسلة <i class="fa-solid fa-cart-shopping"></i>`;
 
-  modal.classList.add("open");
-});
+    modal.classList.add("open");
+  });
+}
 
 // ======================================
 // نافذة السلة (تُبنى ديناميكياً)
@@ -363,7 +369,7 @@ function checkoutWhatsApp() {
 const prodNext = document.getElementById("prodNext");
 const prodPrev = document.getElementById("prodPrev");
 
-if (prodNext && prodPrev && !isAllProductsPage) {
+if (prodNext && prodPrev && !isAllProductsPage && list) {
   const step = () => {
     const card = list.querySelector(".card");
     return card ? card.offsetWidth + 18 : 300;
@@ -481,7 +487,6 @@ if (nav) {
     const id = item.dataset.id;
     if (!id) return;
     
-    // التوجيه لصفحة المنتجات إذا لم نكن فيها
     if (isAllProductsPage) {
       const card = listContainer.querySelector(`.card[data-id="${id}"]`);
       if (card) card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
@@ -508,4 +513,171 @@ if (newsForm) {
     showToast("شكراً لاشتراكك في نشرتنا البريدية!");
     e.target.reset();
   });
+}
+
+// ======================================
+// عداد الزوار (مؤقت لحين ربط قاعدة البيانات)
+// ======================================
+(function initVisitorCounter() {
+  const visitorElement = document.getElementById("visitorCount");
+  if (!visitorElement) return;
+  
+  let baseCount = 1250;
+  let hasVisited = localStorage.getItem("alnour_visited");
+  
+  if (!hasVisited) {
+    localStorage.setItem("alnour_visited", "true");
+    localStorage.setItem("alnour_visitor_count", baseCount + 1);
+    visitorElement.textContent = baseCount + 1;
+  } else {
+    let savedCount = localStorage.getItem("alnour_visitor_count");
+    visitorElement.textContent = savedCount ? savedCount : baseCount;
+  }
+})();
+
+// ======================================
+// نظام إدارة الآراء (Reviews System)
+// ======================================
+
+// الآراء الافتراضية
+const defaultReviews = [
+  { name: "أحمد م.", rating: 5, text: "ساعة رائعة جداً، التغليف فخم والتوصيل كان سريعاً. شكراً لكم!" },
+  { name: "محمود س.", rating: 5, text: "الخامة ممتازة والتعامل محترم جداً. أنصح الجميع بالشراء من متجر النور." },
+  { name: "سارة ع.", rating: 4.5, text: "الساعة جميلة جداً ووصلت في وقت قياسي. خدمة العملاء متعاونة." }
+];
+
+const LS_REVIEWS = "alnour_reviews_v1";
+
+function getReviews() {
+  let saved = localStorage.getItem(LS_REVIEWS);
+  if (!saved) {
+    localStorage.setItem(LS_REVIEWS, JSON.stringify(defaultReviews));
+    return defaultReviews;
+  }
+  try { return JSON.parse(saved); } catch { return defaultReviews; }
+}
+
+function saveReviews(reviews) {
+  localStorage.setItem(LS_REVIEWS, JSON.stringify(reviews));
+}
+
+// دالة بناء كارت الرأي
+function createReviewCard(r) {
+  let starsHTML = "";
+  for (let i = 1; i <= 5; i++) {
+    if (r.rating >= i) {
+      starsHTML += `<i class="fa-solid fa-star"></i>`;
+    } else if (r.rating >= i - 0.5) {
+      starsHTML += `<i class="fa-solid fa-star-half-stroke"></i>`;
+    } else {
+      starsHTML += `<i class="fa-regular fa-star"></i>`;
+    }
+  }
+
+  return `
+    <div class="review-card">
+      <div class="stars">${starsHTML}</div>
+      <p>"${r.text}"</p>
+      <div class="reviewer">
+        <i class="fa-solid fa-user-circle"></i>
+        <span>${r.name}</span>
+      </div>
+    </div>
+  `;
+}
+
+// ===== عرض الآراء في الصفحة الرئيسية (أول 3 فقط) =====
+const homeReviewsContainer = document.querySelector("#reviews .reviews-grid");
+if (homeReviewsContainer && !document.getElementById("all-products-list") && !document.getElementById("reviews-container")) {
+  const allRevs = getReviews();
+  homeReviewsContainer.innerHTML = allRevs.slice(0, 3).map(createReviewCard).join("");
+}
+
+// ===== عرض وإدارة الآراء في صفحة reviews.html =====
+const reviewsPageContainer = document.getElementById("reviews-container");
+const reviewFormContainer = document.getElementById("addReviewFormContainer");
+const toggleFormBtn = document.getElementById("toggleReviewForm");
+
+if (reviewsPageContainer) {
+  // عرض كل الآراء
+  function renderAllReviews() {
+    const allRevs = getReviews();
+    reviewsPageContainer.innerHTML = allRevs.map(createReviewCard).join("");
+  }
+  renderAllReviews();
+
+  // إظهار/إخفاء النموذج
+  if (toggleFormBtn && reviewFormContainer) {
+    toggleFormBtn.addEventListener("click", () => {
+      reviewFormContainer.classList.toggle("open");
+      if (reviewFormContainer.classList.contains("open")) {
+        reviewFormContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  }
+
+  // التعامل مع نجوم التقييم
+  const starInputs = document.querySelectorAll(".star-rating-input i");
+  const ratingInput = document.getElementById("reviewRating");
+
+  starInputs.forEach(star => {
+    star.addEventListener("click", () => {
+      const val = Number(star.dataset.value);
+      ratingInput.value = val;
+      starInputs.forEach(s => {
+        if (Number(s.dataset.value) <= val) {
+          s.classList.remove("fa-regular");
+          s.classList.add("fa-solid");
+        } else {
+          s.classList.remove("fa-solid");
+          s.classList.add("fa-regular");
+        }
+      });
+    });
+  });
+  
+  // تفعيل 5 نجوم افتراضياً
+  if(ratingInput) ratingInput.value = 5;
+  starInputs.forEach(s => {
+    s.classList.remove("fa-regular");
+    s.classList.add("fa-solid");
+  });
+
+  // حفظ التعليق الجديد
+  const addReviewForm = document.getElementById("addReviewForm");
+  if (addReviewForm) {
+    addReviewForm.addEventListener("submit", e => {
+      e.preventDefault();
+      
+      const name = document.getElementById("reviewName").value.trim();
+      const rating = Number(ratingInput.value);
+      const text = document.getElementById("reviewText").value.trim();
+
+      if (!name || !text) return;
+
+      const newReview = { name, rating, text };
+      const allRevs = getReviews();
+      allRevs.unshift(newReview); // إضافة في البداية
+      saveReviews(allRevs);
+
+      // إعادة رسم الآراء
+      renderAllReviews();
+      
+      // إغلاق النموذج وتفريغه
+      reviewFormContainer.classList.remove("open");
+      addReviewForm.reset();
+      ratingInput.value = 5;
+      starInputs.forEach(s => {
+        s.classList.remove("fa-regular");
+        s.classList.add("fa-solid");
+      });
+
+      // إشعار نجاح
+      if (typeof showToast === "function") {
+        showToast("شكراً لك! تم إضافة تقييمك بنجاح.");
+      } else {
+        alert("شكراً لك! تم إضافة تقييمك بنجاح.");
+      }
+    });
+  }
 }
