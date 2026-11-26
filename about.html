@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عن المتجر | متجر النور</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- الشريط العلوي -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span class="topbar-loc"><i class="fa-solid fa-location-dot"></i> Mersin, Türkiye</span>
+      <span class="topbar-ship"><i class="fa-solid fa-truck-fast"></i> شحن سريع لجميع المدن</span>
+      <div class="social">
+        <a href="https://www.facebook.com/share/1Dzon1h2Fz/?mibextid=wwXIfr"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.tiktok.com/@alnour694"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.instagram.com/geievh75/?utm_source=ig_web_button_share_sheet"><i class="fa-brands fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- الهيدر -->
+  <header class="header">
+    <div class="container header-inner">
+      <button class="menu-toggle" id="menuToggle" aria-label="القائمة"><i class="fa-solid fa-bars"></i></button>
+
+      <nav class="nav" id="nav">
+        <a href="index.html">الرئيسية</a>
+        <a href="products.html">المنتجات <i class="fa-solid fa-chevron-down"></i></a>
+        <a href="products.html">الساعات <i class="fa-solid fa-chevron-down"></i></a>
+        <a href="about.html" class="active">عن المتجر</a>
+        <a href="reviews.html">آراء العملاء</a>
+        <a href="index.html#footer">تواصل معنا</a>
+      </nav>
+
+      <a href="index.html" class="logo">
+        <i class="fa-solid fa-crown"></i>
+        <span class="logo-main">متجر النور</span>
+        <span class="logo-sub">ساعات إسلامية فاخرة</span>
+      </a>
+
+      <div class="header-tools">
+        <form class="search" onsubmit="return false;">
+          <input type="text" placeholder="ابحث عن ساعة...">
+          <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+        <a href="#" class="icon-btn cart-btn" aria-label="سلة التسوق">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- قسم عن المتجر -->
+  <section class="container section" style="min-height: 60vh; padding-bottom: 60px;">
+    <div class="section-title">
+      <span class="line"></span>
+      <h2><i class="fa-solid fa-store"></i> عن متجر النور</h2>
+      <span class="line"></span>
+    </div>
+
+    <div class="about-content" style="max-width: 800px; margin: 0 auto; text-align: center;">
+      <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px; font-weight: 600; color: var(--text);">
+        مرحباً بكم في <strong>متجر النور</strong>، وجهتكم الأولى للساعات الإسلامية الفاخرة.
+      </p>
+      <p style="font-size: 16px; line-height: 1.8; margin-bottom: 20px; color: #554433;">
+        نحن نؤمن أن الساعة ليست مجرد أداة لمعرفة الوقت، بل هي تعبير عن الأناقة والذوق الرفيع. تأسس متجرنا في مدينة <strong>مرسين - تركيا</strong> ليجمع لكم أرقى تشكيلات الساعات التي تجمع بين التصميم الإسلامي الأصيل واللمسات العصرية الفاخرة.
+      </p>
+      <p style="font-size: 16px; line-height: 1.8; margin-bottom: 40px; color: #554433;">
+        نلتزم بتقديم جودة أصلية مضمونة، وتغليف هدايا فاخر، وخدمة عملاء استثنائية، لنكون دائماً الخيار الأول لكم في كل مناسبة.
+      </p>
+      
+      <div class="features" style="margin-top: 0; grid-template-columns: repeat(3,1fr);">
+        <div class="feature"><i class="fa-solid fa-gem"></i><span>جودة فاخرة</span></div>
+        <div class="feature"><i class="fa-solid fa-hand-holding-heart"></i><span>خدمة مميزة</span></div>
+        <div class="feature"><i class="fa-solid fa-shield-halved"></i><span>ضمان حقيقي</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- الفوتر -->
+  <footer class="footer" id="footer">
+    <div class="container footer-inner">
+      <div class="footer-links">
+        <h4>روابط سريعة</h4>
+        <a href="index.html">الرئيسية</a>
+        <a href="products.html">المنتجات</a>
+        <a href="reviews.html">آراء العملاء</a>
+        <a href="about.html">عن المتجر</a>
+        <a href="index.html#footer">تواصل معنا</a>
+      </div>
+
+      <div class="footer-brand">
+        <i class="fa-solid fa-crown"></i>
+        <div class="logo-main">متجر النور</div>
+        <p>ساعات إسلامية فاخرة</p>
+        <div class="social big">
+          <a href="https://www.facebook.com/share/1Dzon1h2Fz/?mibextid=wwXIfr"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.tiktok.com/@alnour694"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://www.instagram.com/geievh75/?utm_source=ig_web_button_share_sheet"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <div class="newsletter">
+        <h4>اشترك في نشرتنا البريدية</h4>
+        <p>ليصلك كل جديد وعروضنا الخاصة</p>
+        <form id="newsForm">
+          <input type="email" placeholder="أدخل بريدك الإلكتروني" required>
+          <button type="submit">اشتراك</button>
+        </form>
+      </div>
+    </div>
+    
+    <!-- حقوق النشر -->
+    <div class="footer-copyright">
+      <p>جميع الحقوق محفوظة &copy; <span id="currentYear"></span> - متجر النور للساعات الإسلامية الفاخرة</p>
+    </div>
+  </footer>
+
+  <!-- زر واتساب -->
+  <a href="https://wa.me/+905514969472" class="whatsapp" target="_blank" aria-label="واتساب">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
