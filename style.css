@@ -489,6 +489,7 @@ button{
   position:relative;
   transition:.3s;
   min-width:0;
+  overflow:hidden;
 }
 
 .card:hover{
@@ -2125,4 +2126,37 @@ button{
   #reviewText {
     font-size: 16px !important;
   }
+}
+
+/* =========================================
+   شارات المنتجات (Badges) - جاهزة لوحة التحكم
+   ========================================= */
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  left: -30px;
+  background: var(--gold);
+  color: #000;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 35px;
+  transform: rotate(-45deg);
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  white-space: nowrap;
+}
+
+/* =========================================
+   حقوق النشر في الفوتر
+   ========================================= */
+
+.footer-copyright {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(212,162,76,.25);
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 600;
 }
