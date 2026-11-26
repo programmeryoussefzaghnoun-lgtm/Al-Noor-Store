@@ -1,11 +1,12 @@
 // ===== بيانات المنتجات =====
+// ملاحظة: حقل badge جاهز للاستخدام، اتركه فارغاً (null) أو ضع فيه النص مثل "خصم 20%" ليظهر تلقائياً
 const products = [
-  { id: 1, name: "ساعة كاسيو ذهبية", price: 1650, img: "image1.jpg" },
-  { id: 2, name: "ساعة SKMEI رياضية", price: 1750, img: "image2.jpg" },
-  { id: 3, name: "ساعة كلاسيكية فاخرة", price: 1600, img: "image3.jpg" },
-  { id: 4, name: "ساعة رجالية أنيقة", price: 1800, img: "image4.jpg" },
-  { id: 5, name: "ساعة رياضية مقاومة", price: 1900, img: "image5.jpg" },
-  { id: 6, name: "ساعة جلدية كلاسيك", price: 1550, img: "image6.jpg" }
+  { id: 1, name: "ساعة كاسيو ذهبية", price: 1650, img: "image1.jpg", badge: null },
+  { id: 2, name: "ساعة SKMEI رياضية", price: 1750, img: "image2.jpg", badge: null },
+  { id: 3, name: "ساعة كلاسيكية فاخرة", price: 1600, img: "image3.jpg", badge: null },
+  { id: 4, name: "ساعة رجالية أنيقة", price: 1800, img: "image4.jpg", badge: null },
+  { id: 5, name: "ساعة رياضية مقاومة", price: 1900, img: "image5.jpg", badge: null },
+  { id: 6, name: "ساعة جلدية كلاسيك", price: 1550, img: "image6.jpg", badge: null }
 ];
 
 // ======================================
@@ -63,8 +64,12 @@ const isAllProductsPage = document.getElementById("all-products-list") !== null;
 const listContainer = isAllProductsPage ? document.getElementById("all-products-list") : list;
 
 function createProductCard(p) {
+  // إظهار الشارة فقط إذا كانت موجودة
+  const badgeHTML = p.badge ? `<div class="product-badge">${p.badge}</div>` : "";
+
   return `
   <article class="card" data-id="${p.id}">
+    ${badgeHTML}
     <div class="thumb">
       <img src="${p.img}" alt="${p.name}"
            onerror="this.onerror=null;this.src='https://via.placeholder.com/400x400?text=THE+WATCH'">
@@ -680,4 +685,12 @@ if (reviewsPageContainer) {
       }
     });
   }
+}
+
+// ======================================
+// تحديث سنة الحقوق تلقائياً
+// ======================================
+const yearSpan = document.getElementById("currentYear");
+if (yearSpan) {
+  yearSpan.textContent = new Date().getFullYear();
 }
