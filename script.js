@@ -103,7 +103,6 @@ function renderStoreProducts() {
     const initialProducts = products.slice(0, 4);
     listContainer.innerHTML = initialProducts.map(createProductCard).join("");
 
-    // إضافة زر عرض المزيد إذا لم يكن موجوداً
     if (!document.querySelector(".btn-show-more-wrapper")) {
       const btnWrapper = document.createElement("div");
       btnWrapper.className = "btn-show-more-wrapper";
@@ -131,7 +130,6 @@ function updateCartCount() {
 if (listContainer) {
   listContainer.addEventListener("click", e => {
     
-    // 1. زر الإضافة للسلة
     const add = e.target.closest(".add-cart");
     if (add) {
       const productId = add.dataset.id;
@@ -146,7 +144,6 @@ if (listContainer) {
       return;
     }
 
-    // 2. زر الشراء المباشر
     const buyNow = e.target.closest(".btn-buy-now");
     if (buyNow) {
       const productId = buyNow.dataset.id;
@@ -183,7 +180,7 @@ function ensureProductModal() {
         <div class="product-view-info">
           <h2 id="pvName"></h2>
           <div class="price" id="pvPrice"></div>
-          <p>ساعة فاخرة مصممة بعناية لتناسب أناقتك. جودة عالية، تصميم عصري، وتغليف ممتاز يليق بك. ضمان حقيقي وتوصيل سريع لجميع المدن.</p>
+          <p id="pvDesc"></p>
           <button class="add-cart" id="pvAddCart">أضف للسلة <i class="fa-solid fa-cart-shopping"></i></button>
         </div>
       </div>
@@ -232,6 +229,7 @@ if (listContainer) {
     modal.querySelector("#pvImage").src = product.img;
     modal.querySelector("#pvName").textContent = product.name;
     modal.querySelector("#pvPrice").textContent = formatPrice(product.price);
+    modal.querySelector("#pvDesc").textContent = product.desc || "ساعة فاخرة مصممة بعناية لتناسب أناقتك. جودة عالية، تصميم عصري، وتغليف ممتاز يليق بك. ضمان حقيقي وتوصيل سريع لجميع المدن.";
     modal.querySelector("#pvAddCart").dataset.id = product.id;
     modal.querySelector("#pvAddCart").innerHTML = `أضف للسلة <i class="fa-solid fa-cart-shopping"></i>`;
 
@@ -342,7 +340,6 @@ if (cartButton) {
   });
 }
 
-// ===== تجهيز طلب واتساب للسلة =====
 function checkoutWhatsApp() {
   if (Object.keys(cart).length === 0) {
     showToast("السلة فارغة! أضف المنتجات أولاً.");
@@ -375,9 +372,6 @@ function checkoutWhatsApp() {
   window.open(whatsappURL, "_blank");
 }
 
-// ... أكواد السلايدر والبحث والنشرة البريدية ...
-// (لقد احتفظت بها كما هي في مشروعك، سأضعها في النهاية لتكون كاملة)
-
 // السلايدر
 const slides = document.querySelectorAll(".slide");
 const heroEl = document.getElementById("hero");
@@ -409,7 +403,7 @@ if (heroNext && heroPrev) {
 }
 auto();
 
-// ===== قائمة الجوال =====
+// قائمة الجوال
 const nav = document.getElementById("nav");
 const menuToggle = document.getElementById("menuToggle");
 if (menuToggle) {
@@ -421,7 +415,7 @@ if (nav) {
   });
 }
 
-// ===== النشرة البريدية =====
+// النشرة البريدية
 const newsForm = document.getElementById("newsForm");
 if (newsForm) {
   newsForm.addEventListener("submit", e => {
@@ -431,28 +425,21 @@ if (newsForm) {
   });
 }
 
-// ======================================
-// التهيئة الأولية من Firebase
-// ======================================
+// التهيئة الأولية
 async function initApp() {
   try {
-    // 1. جلب الإعدادات (رقم الواتساب)
     const settingsDoc = await getDoc(doc(db, "settings", "general"));
     if (settingsDoc.exists() && settingsDoc.data().whatsapp) {
       whatsappNumber = settingsDoc.data().whatsapp;
     }
 
-    // 2. جلب المنتجات
     const querySnapshot = await getDocs(collection(db, "products"));
     products = [];
     querySnapshot.forEach((docSnap) => {
       products.push({ id: docSnap.id, ...docSnap.data() });
     });
 
-    // 3. تحميل السلة من الذاكرة
     cart = loadJSON(LS_CART, {});
-
-    // 4. رسم المنتجات بعد جلبها
     renderStoreProducts();
     updateCartCount();
 
@@ -464,5 +451,4 @@ async function initApp() {
   }
 }
 
-// تشغيل التطبيق
 initApp();
