@@ -28,7 +28,7 @@
     }
     
     .form-group input:focus, .form-group textarea:focus { border-color: #d4a24c; }
-    .btn-gold { background: linear-gradient(180deg, #f0c776, #d4a24c); color: #000; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; font-family: inherit; }
+    .btn-gold { background: linear-gradient(180deg, #f0c776, #d4a24c); color: #000; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; font-family: inherit; transition: 0.3s; }
     .btn-danger { background: #dc3545; color: #fff; padding: 5px 10px; border-radius: 6px; cursor: pointer; border: none; }
     table { width: 100%; border-collapse: collapse; margin-top: 15px; }
     table th, table td { padding: 12px; text-align: right; border-bottom: 1px solid #eee; }
@@ -64,9 +64,11 @@
       <div id="section-products">
         <div class="page-title"><span>إدارة المنتجات</span></div>
 
-        <div class="dash-card">
-          <h3>إضافة منتج جديد</h3>
-          <form id="addProductForm">
+        <div class="dash-card" id="formCard">
+          <h3 id="formTitle">إضافة منتج جديد</h3>
+          <form id="productForm">
+            <input type="hidden" id="editProductId">
+            
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
               <div class="form-group">
                 <label>اسم المنتج</label>
@@ -108,7 +110,11 @@
                 </select>
               </div>
             </div>
-            <button type="submit" class="btn-gold" style="margin-top: 10px;" id="submitBtn"><i class="fa-solid fa-plus"></i> إضافة المنتج</button>
+            
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+              <button type="submit" class="btn-gold" id="submitBtn"><i class="fa-solid fa-plus"></i> إضافة المنتج</button>
+              <button type="button" class="btn-gold" id="cancelEditBtn" style="display: none; background: #ccc; color: #333;"><i class="fa-solid fa-xmark"></i> إلغاء التعديل</button>
+            </div>
             <div id="msg-add" class="status-msg"></div>
           </form>
         </div>
@@ -150,8 +156,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD5vYclVK8iQQOn-CZ39T9EZeWKWNUDYP0",
@@ -165,7 +170,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-    const storage = getStorage(app);
 
     // حماية الصفحة
     onAuthStateChanged(auth, (user) => {
@@ -202,9 +206,11 @@
       if(type === 'url') {
         document.querySelector('.image-tabs button:nth-child(1)').classList.add('active');
         document.getElementById('tab-url').classList.add('active');
+        document.getElementById('pImgUrl').required = true;
       } else {
         document.querySelector('.image-tabs button:nth-child(2)').classList.add('active');
         document.getElementById('tab-upload').classList.add('active');
+        document.getElementById('pImgUrl').required = false;
       }
     };
 
@@ -224,7 +230,10 @@
               <td>${p.name}</td>
               <td>${p.price} ₺</td>
               <td>${p.badge ? `<span style="background:#d4a24c;color:#000;padding:2px 6px;border-radius:4px;font-size:12px;">${p.badge}</span>` : "لا يوجد"}</td>
-              <td><button class="btn-danger" onclick="deleteProduct('${id}')"><i class="fa-solid fa-trash"></i></button></td>
+              <td>
+                <button class="btn-gold" style="padding:5px 10px; font-size:12px; margin-left:5px;" onclick="editProduct('${id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-danger" onclick="deleteProduct('${id}')"><i class="fa-solid fa-trash"></i></button>
+              </td>
             </tr>
           `;
         });
@@ -234,50 +243,66 @@
       }
     }
 
-    document.getElementById("addProductForm").addEventListener("submit", async (e) => {
+    // إضافة أو تعديل منتج
+    document.getElementById("productForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const msgDiv = document.getElementById("msg-add");
       const submitBtn = document.getElementById("submitBtn");
       msgDiv.className = "status-msg";
       
+      const id = document.getElementById("editProductId").value;
       const name = document.getElementById("pName").value;
       const price = Number(document.getElementById("pPrice").value);
       const desc = document.getElementById("pDesc").value;
       const badge = document.getElementById("pBadge").value || null;
       const isUploadTab = document.getElementById('tab-upload').classList.contains('active');
-      
-      let imgUrl = "";
+
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
 
       try {
+        let imgUrl = document.getElementById("pImgUrl").value;
+
+        // إذا اختار المستخدم رفع صورة من الجهاز، نحولها إلى Base64
         if (isUploadTab) {
           const fileInput = document.getElementById("pImgFile");
-          if (fileInput.files.length === 0) throw new Error("يرجى اختيار صورة للرفع.");
+          if (fileInput.files.length === 0 && !id) {
+            throw new Error("يرجى اختيار صورة للرفع.");
+          }
           
-          const file = fileInput.files[0];
-          const storageRef = ref(storage, 'products/' + Date.now() + '_' + file.name);
-          await uploadBytes(storageRef, file);
-          imgUrl = await getDownloadURL(storageRef);
-        } else {
-          imgUrl = document.getElementById("pImgUrl").value;
-          if (!imgUrl) throw new Error("يرجى إدخال رابط الصورة.");
+          if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            // دالة مساعدة لقراءة الملف وتحويله
+            imgUrl = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+            });
+          }
         }
 
-        await addDoc(collection(db, "products"), {
+        if (!imgUrl) throw new Error("يرجى توفير صورة للمنتج (رابط أو من الجهاز).");
+
+        const productData = {
           name: name,
           price: price,
           desc: desc,
           img: imgUrl,
-          badge: badge,
-          createdAt: new Date()
-        });
+          badge: badge
+        };
+
+        if (id) {
+          await updateDoc(doc(db, "products", id), productData);
+          msgDiv.textContent = "تم تعديل المنتج بنجاح!";
+        } else {
+          productData.createdAt = new Date();
+          await addDoc(collection(db, "products"), productData);
+          msgDiv.textContent = "تم إضافة المنتج بنجاح!";
+        }
         
         msgDiv.className = "status-msg success";
-        msgDiv.textContent = "تم إضافة المنتج بنجاح!";
-        e.target.reset();
-        switchTab('url');
-        
+        resetForm();
         setTimeout(() => msgDiv.className = "status-msg", 3000);
         loadProducts();
       } catch (error) {
@@ -290,6 +315,46 @@
       }
     });
 
+    // دالة مسح النموذج
+    function resetForm() {
+      document.getElementById("productForm").reset();
+      document.getElementById("editProductId").value = "";
+      document.getElementById("formTitle").innerHTML = '<i class="fa-solid fa-plus"></i> إضافة منتج جديد';
+      document.getElementById("submitBtn").innerHTML = '<i class="fa-solid fa-plus"></i> إضافة المنتج';
+      document.getElementById("cancelEditBtn").style.display = "none";
+      switchTab('url'); // إعادة التبويب للوضع الافتراضي
+    }
+
+    document.getElementById("cancelEditBtn").addEventListener("click", resetForm);
+
+    // دالة ملء النموذج عند التعديل
+    window.editProduct = async (id) => {
+      try {
+        const docSnap = await getDoc(doc(db, "products", id));
+        if (docSnap.exists()) {
+          const p = docSnap.data();
+          document.getElementById("editProductId").value = id;
+          document.getElementById("pName").value = p.name;
+          document.getElementById("pPrice").value = p.price;
+          document.getElementById("pDesc").value = p.desc || "";
+          document.getElementById("pBadge").value = p.badge || "";
+          
+          // إذا كانت الصورة Base64 أو رابط، نضعها في حقل الرابط
+          document.getElementById("pImgUrl").value = p.img.startsWith('data:image') ? "" : p.img;
+          
+          document.getElementById("formTitle").innerHTML = '<i class="fa-solid fa-pen"></i> تعديل المنتج';
+          document.getElementById("submitBtn").innerHTML = '<i class="fa-solid fa-save"></i> حفظ التعديلات';
+          document.getElementById("cancelEditBtn").style.display = "inline-block";
+          switchTab('url'); // نجعله رابط افتراضياً عند التعديل لتسهيل الرؤية
+          
+          document.getElementById("formCard").scrollIntoView({ behavior: 'smooth' });
+        }
+      } catch (error) {
+        alert("حدث خطأ في جلب بيانات المنتج.");
+      }
+    };
+
+    // حذف منتج
     window.deleteProduct = async (id) => {
       if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
         try {
